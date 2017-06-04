@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN" "http://struts.apache.org/dtds/struts-2.1.dtd">
+<struts>
+	<constant name="struts.devMode" value="true" />
+	<constant name="struts.configuration.xml.reload" value="true" /> 
+	<constant name="struts.i18n.encoding" value="UTF-8" />
+	
+	<package name="default" namespace="/" extends="struts-default">	
+		<interceptors>
+			<interceptor name="myTime" class="com.struts.interceptor.MyTimeInterceptor" />
+		</interceptors>
+		<default-action-ref name="index"/>
+		<global-results>
+			<result name="error">/pages/error.jsp</result>
+		</global-results>
+		
+		<global-exception-mappings>
+			<exception-mapping result="error" exception="java.lang.NullPointerException" >
+			</exception-mapping>
+		</global-exception-mappings>
+		
+		<action name="index">
+			<result>/pages/login.jsp</result>
+		</action>
+		<action name="login" class="com.struts.action.LoginAction">
+			<result name="success" type="redirectAction">${nextDispose}</result>
+			<result name="failure">/pages/login.jsp</result>
+		</action>
+		<action name="admin" class="com.struts.action.AdminAction">
+			<result name="success">
+				/pages/success.jsp
+			</result>
+			<interceptor-ref name="defaultStack" />
+			<interceptor-ref name="myTime" />
+		</action>
+		<action name="common" class="com.struts.action.CommonAction">
+			<result name="success">
+				/pages/success.jsp
+			</result>
+			<interceptor-ref name="myTime" />
+		</action>	
+	</package>
+	
+	<include file="struts-house.xml"></include>
+	<include file="struts-user.xml"></include>
+</struts>   
